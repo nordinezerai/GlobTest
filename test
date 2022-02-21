@@ -1,0 +1,57 @@
+Question 1 :
+
+La fonction foo() merge les réunions d'intervalles d'un tableau d'intervalles passé en paramêtre. 
+Ici une intervalle est un tableau de deux valeurs contenant une borne inférieur et une borne supérieur.
+
+Question 2 :
+
+function foo($tab){
+
+    // tri du tableau d'intervalles par ordre croissant de la borne inférieur
+    usort($tab, function($a, $b) { return $a[0] - $b[0]; } );
+
+    $count = count($tab);
+    $j = 0;
+
+    // on merge les reunions d'intervalles
+    for ($i = 1; $i < $count; $i++) {
+
+        // si la borne inférieur du tableau suivant $tab[$j] se trouve dans l'intervalle du tableau parcouru $tab[$i]
+        // on garde la reunion des deux intervalles
+        if ($tab[$i][0] <= $tab[$j][1]) {
+
+            $tab[$j][1] = max($tab[$j][1], $tab[$i][1]);
+
+            unset($tab[$i]);
+        }
+        else $j = $i;
+    }
+
+    $tab = array_values($tab);
+
+    return $tab;
+}
+
+print_r(foo([[3, 8], [5, 9], [10, 25], [8, 9], [0, 3]]));
+
+L'exemple ci-dessus va afficher :
+
+Array
+(
+    [0] => Array
+        (
+            [0] => 0
+            [1] => 9
+        )
+
+    [1] => Array
+        (
+            [0] => 10
+            [1] => 25
+        )
+
+)
+
+Question 3 :
+
+3h environ.
